@@ -18,7 +18,7 @@ npm install
 npm run dev
 ```
 
-App runs at [http://localhost:3000](http://localhost:3000).
+ runs at(https://mirt-tech-2fop.vercel.app/)
 
 ## Current Implementation Status
 
