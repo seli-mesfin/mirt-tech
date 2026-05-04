@@ -171,3 +171,59 @@ export async function fetchProductsByFarmer(farmerId: string) {
     farmer_user_id: post.user_id
   })) as ProductRow[];
 }
+/* -----------------------------
+    🛠️ MISSING ADMIN OPERATIONS
+------------------------------*/
+
+// 1. Fetch ALL Deals for the Admin Dashboard
+export async function fetchAllDeals() {
+  if (!supabase) throw new Error("Supabase client not configured.");
+
+  const { data, error } = await supabase
+    .from("deals")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) normalizeSupabaseError(error, "Unable to load all deals");
+  return mapDealRows(data ?? []);
+}
+
+// 2. Fetch ALL Farmers for the Admin Dashboard
+export async function fetchAllFarmers() {
+  if (!supabase) throw new Error("Supabase client not configured.");
+
+  const { data, error } = await supabase
+    .from("farmers")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) normalizeSupabaseError(error, "Unable to load all farmers");
+  return (data ?? []) as FarmerRow[];
+}
+
+// 3. Fetch ALL Payments (Used by Admin and Exporter Reports)
+export async function fetchAllPayments() {
+  if (!supabase) throw new Error("Supabase client not configured.");
+
+  const { data, error } = await supabase
+    .from("payments")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) normalizeSupabaseError(error, "Unable to load payments");
+  return (data ?? []) as PaymentRow[];
+}
+
+// 4. Fetch Payments specifically for an Exporter
+export async function fetchPaymentsByPayer(exporterId: string) {
+  if (!supabase || !exporterId) return [];
+
+  const { data, error } = await supabase
+    .from("payments")
+    .select("*")
+    .eq("payer_id", exporterId)
+    .order("created_at", { ascending: false });
+
+  if (error) normalizeSupabaseError(error, "Unable to load your payments");
+  return (data ?? []) as PaymentRow[];
+}

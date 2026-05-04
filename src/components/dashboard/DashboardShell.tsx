@@ -8,7 +8,7 @@ import Link from "next/link";
 type DashboardShellProps = {
   children: ReactNode;
   title: string;
-  role: 'farmer' | 'exporter';
+  role: 'farmer' | 'exporter' | 'admin'; // Add 'admin' here
 };
 
 export function DashboardShell({ children, title, role }: DashboardShellProps) {
